@@ -23,9 +23,17 @@ init' =  snd . foldr begin (False, [])
 -- Exercício 10.17 --
 type Line = [String]
 
-{- formatLine :: Line -> String
+formatLine :: Line -> String
+formatLine line = foldr join "" line
+  where join a "" = a
+        join a b  = a ++ " " ++ b
+
 formatList :: (a -> String) -> [a] -> String
-formatLines :: (a -> String) -> [Line] -> String-}
+formatList _ []     = ""
+formatList f (x:xs) = (f x) ++ formatList f xs
+
+formatLines :: (String -> String) -> [Line] -> String
+formatLines f xs = formatList f [formatLine x | x <- xs]
 
 -- Exercício 10.18 --
 filterList :: (a -> Bool) -> [a] -> [a]
@@ -78,8 +86,8 @@ lineLength = 30
 
 formatPence :: Price -> String
 formatPence price 
-  | digits == 4 = frt(splitAt 2 (show price)) ++ "." ++ scd (splitAt 2 (show price))
-  | digits == 3 = frt(splitAt 1 (show price)) ++ "." ++ scd (splitAt 1 (show price))
+  | digits == 4 = fst(splitAt 2 (show price)) ++ "." ++ snd (splitAt 2 (show price))
+  | digits == 3 = fst(splitAt 1 (show price)) ++ "." ++ snd (splitAt 1 (show price))
   | digits == 2 = "."++ (show price)
   | digits == 1 = ".0"++(show price)
   where digits = length (show price)
@@ -95,7 +103,7 @@ formatLinesBill :: [(Name, Price)] -> String
 formatLinesBill list = foldr (++) [] (map formatLineBill list)
 
 makeTotal :: BillType -> Price
-makeTotal list = foldr (+) 0 (map scd list)
+makeTotal list = foldr (+) 0 (map snd list)
 
 formatTotal :: Price -> String
 formatTotal total = "\nTotal" ++ (foldr (++) [] (replicate n ".")) ++ (formatPence total)
