@@ -13,4 +13,4 @@ Functional programming:
  - typing, overloading, type classes, type inference
  - abstract data types and modules
  - lazy evaluation
- - monads and I/O 
+ - monads and I/O
